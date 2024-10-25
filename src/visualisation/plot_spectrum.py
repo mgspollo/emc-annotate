@@ -7,7 +7,7 @@ import seaborn as sns
 
 # fig, ax = plt.subplots(figsize=(16, 16))
 def plotting_signal_raw():
-    df = read_test_data()
+    df = read_test_data(max_test_id=10060)
     df_all_ambient = pd.DataFrame()
     for i, row in df.iterrows():
         row = row.to_dict()
