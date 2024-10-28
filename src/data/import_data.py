@@ -154,7 +154,14 @@ def read_test_data(max_test_id):
     return df_all_signal
 
 
+def normalise_spectra():
+    df = read_test_data(max_test_id=10080)
+    for col in df.columns():
+        if col.contains('a'):
+            df[col]
+
+
 if __name__ == "__main__":
-    max_test_id = 10061
+    max_test_id = 10080
     df_all_signal = read_test_data(max_test_id)
     df_metadata = read_test_metadata(max_test_id)
