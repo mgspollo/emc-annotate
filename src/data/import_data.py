@@ -154,14 +154,24 @@ def read_test_data(max_test_id):
     return df_all_signal
 
 
-def normalise_spectra():
+def normalise_spectra(max_test_id):
     df = read_test_data(max_test_id=10080)
-    for col in df.columns():
-        if col.contains('a'):
-            df[col]
+    for i, test_id in enumerate(range(10001, max_test_id)):
+        df[str(test_id) + "n"] = df[str(test_id)] - df[str(test_id) + "a"]
+        # df[str(test_id) + "n"] = (df[str(test_id) + "n"] - min(df[str(test_id) + "n"])
+    return df
+
+def process_metadata(max_test_id):
+    df_metadata = read_test_metadata(max_test_id)
+    df_metadata["is_protocol_constant"] = df_metadata["display_output_protocol"] == df_metadata["display_receive_protocol"]
+    df_metadata = df_metadata[[
+        "is_protocol_constant", 'is_power_supply_present', 'test_id', 'product_description', 'display_output_protocol', 'display_receive_protocol',
+    ]]
+    df_metadata['test_id'] = df_metadata['test_id'].astype(str)
+    return df_metadata.set_index('test_id')
 
 
 if __name__ == "__main__":
     max_test_id = 10080
     df_all_signal = read_test_data(max_test_id)
-    df_metadata = read_test_metadata(max_test_id)
+    df_metadata = process_metadata(max_test_id)

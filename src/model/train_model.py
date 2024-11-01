@@ -48,7 +48,7 @@ def aggregate_features_old(columns_to_aggregate=["is_power_supply_present", "is_
 
 
 def aggregate_feature(columns_to_aggregate=["display_output_protocol", "display_receive_protocol"]):
-    max_test_id = 10061
+    max_test_id = 10080
     df_all_signal = read_test_data(max_test_id)
     df_metadata = read_test_metadata(max_test_id)
     columns_to_aggregate.append("test_id")
