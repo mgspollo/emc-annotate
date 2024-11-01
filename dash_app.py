@@ -19,7 +19,7 @@ app = dash.Dash(__name__)
 app.layout = html.Div(style={'backgroundColor': '#f8f8f8', 'fontFamily': 'Arial, sans-serif'}, children=[
     html.Div(style={'padding': '20px', 'backgroundColor': '#3498db', 'color': 'white', 'textAlign': 'center'},
              children=[
-                 html.Img(src="assets/kenlock_logo.png",
+                 html.Img(src="src/visualisation/assets/kenlock_logo.PNG",
                           style={'width': '250px', 'height': 'auto', 'marginBottom': '10px'}),
                  html.H1("EMC Spectrum Component Detection Tool", style={'marginBottom': '5px'}),
              ]),
