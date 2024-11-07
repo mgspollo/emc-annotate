@@ -1,7 +1,7 @@
 import dash
 from dash import dcc, html, Input, Output
 import plotly.graph_objs as go
-from src.model.identify_power_supply import predict_full
+from src.model.identify_components import predict_full
 from src.data.import_data import normalise_spectra
 
 max_test_id = 10080
