@@ -166,7 +166,7 @@ def normalise_spectra(max_test_id):
     for i, test_id in enumerate(range(10001, max_test_id)):
         df[str(test_id) + "n"] = df[str(test_id)] - df[str(test_id) + "a"]
         # df[str(test_id) + "n"] = (df[str(test_id) + "n"] - min(df[str(test_id) + "n"])
-    save_file(df)
+    save_tests(df)
     return df
 
 def filter_only_tests(max_test_id):
@@ -181,10 +181,15 @@ def process_metadata(max_test_id):
         "is_protocol_constant", 'is_power_supply_present', 'power_supply_loading', 'test_id', 'product_description', 'display_output_protocol', 'display_receive_protocol',
     ]]
     df_metadata['test_id'] = df_metadata['test_id'].astype(str)
+    save_metadata(df_metadata)
     return df_metadata.set_index('test_id')
 
 
-def save_file(df):
+def save_metadata(df_metadata):
+    df_metadata.to_csv("../../data/processed_data/metadata.csv", index=False)
+
+
+def save_tests(df):
     df.to_csv("../../data/processed_data/all_tests.csv")
 
 
