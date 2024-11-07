@@ -119,6 +119,13 @@ def convert_column_names(df):
         columns=["level_0", "level_1", "Type", "Description", "Allowed Values", "Datatype", "Notes"])
     df_cleaned = df_cleaned.set_index("Data Name").T
     df_cleaned = df_cleaned.dropna(how='all', axis=1)
+    if "test_id" in df_cleaned.columns:
+        df_cleaned = df_cleaned.dropna(subset=["test_id"])
+        df_cleaned['test_id'] = df_cleaned['test_id'].astype(int)
+
+    if "product_id" in df_cleaned.columns:
+        df_cleaned = df_cleaned.dropna(subset=["product_id"])
+        df_cleaned['product_id'] = df_cleaned['product_id'].astype(int).astype(str).str.zfill(4)
     return df_cleaned
 
 
@@ -159,16 +166,26 @@ def normalise_spectra(max_test_id):
     for i, test_id in enumerate(range(10001, max_test_id)):
         df[str(test_id) + "n"] = df[str(test_id)] - df[str(test_id) + "a"]
         # df[str(test_id) + "n"] = (df[str(test_id) + "n"] - min(df[str(test_id) + "n"])
+    save_file(df)
+    return df
+
+def filter_only_tests(max_test_id):
+    df = normalise_spectra(max_test_id)
+    df = df[[str(i) + "n" for i in range(10001, max_test_id) if not i == 10065]]
     return df
 
 def process_metadata(max_test_id):
     df_metadata = read_test_metadata(max_test_id)
     df_metadata["is_protocol_constant"] = df_metadata["display_output_protocol"] == df_metadata["display_receive_protocol"]
     df_metadata = df_metadata[[
-        "is_protocol_constant", 'is_power_supply_present', 'test_id', 'product_description', 'display_output_protocol', 'display_receive_protocol',
+        "is_protocol_constant", 'is_power_supply_present', 'power_supply_loading', 'test_id', 'product_description', 'display_output_protocol', 'display_receive_protocol',
     ]]
     df_metadata['test_id'] = df_metadata['test_id'].astype(str)
     return df_metadata.set_index('test_id')
+
+
+def save_file(df):
+    df.to_csv("../../data/processed_data/all_tests.csv")
 
 
 if __name__ == "__main__":

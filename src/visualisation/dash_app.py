@@ -1,25 +1,25 @@
-KENLOCK_COLOUR = "#3498db"
-
 import dash
 from dash import dcc, html, Input, Output
 import plotly.graph_objs as go
-import pandas as pd
-import numpy as np
-from src.data.import_data import normalise_spectra, process_metadata
+from src.model.identify_power_supply import predict_full
+from src.data.import_data import normalise_spectra
 
 max_test_id = 10080
 # Sample data for the example
 test_ids = [f"{i}" for i in range(10001, max_test_id)]
 df = normalise_spectra(max_test_id)
 
-metadata = process_metadata(max_test_id).fillna('False')
-
 app = dash.Dash(__name__)
+
+# Assuming `df_metadata` is your metadata dataframe
+metadata = predict_full()
+
+
 
 app.layout = html.Div(style={'backgroundColor': '#f8f8f8', 'fontFamily': 'Arial, sans-serif'}, children=[
     html.Div(style={'padding': '20px', 'backgroundColor': '#3498db', 'color': 'white', 'textAlign': 'center'},
              children=[
-                 html.Img(src="src/visualisation/assets/kenlock_logo.PNG",
+                 html.Img(src="assets/kenlock_logo.PNG",
                           style={'width': '250px', 'height': 'auto', 'marginBottom': '10px'}),
                  html.H1("EMC Spectrum Component Detection Tool", style={'marginBottom': '5px'}),
              ]),
@@ -91,11 +91,15 @@ def update_plots(selected_tests):
             style={'padding': '10px', 'border': '1px solid #dedede', 'borderRadius': '5px', 'marginBottom': '10px'},
             children=[
                 html.P(f"Test ID: {test_id}", style={'fontWeight': 'bold'}),
-                html.P(f"Protocol Constant: {'Yes' if metadata.loc[test_id, 'is_protocol_constant'] else 'No'}"),
-                html.P(f"Power Supply: {'Yes' if metadata.loc[test_id, 'is_power_supply_present'] else 'No'}"),
                 html.P(f"Product Description: {metadata.loc[test_id, 'product_description']}"),
-                html.P(f"Display Output Protocol: {metadata.loc[test_id, 'display_output_protocol']}"),
-                html.P(f"Display Receive Protocol: {metadata.loc[test_id, 'display_receive_protocol']}")
+                html.P(f"Power Supply: {'Yes' if metadata.loc[test_id, 'is_power_supply'] else 'No'}"),
+                html.P(f"HDMI Present: {metadata.loc[test_id, 'is_HDMI']}"),
+                html.P(f"Display Port Present: {metadata.loc[test_id, 'is_DisplayPort']}"),
+                html.P("Predicted Components:", style={'fontWeight': 'bold'}),
+                html.P(f"Predicted HDMI Present: {metadata.loc[test_id, 'is_hdmi_prediction']}"),
+                html.P(f"Predicted DisplayPort Present: {metadata.loc[test_id, 'is_display_port_prediction']}"),
+                html.P(f"Predicted Power Supply Present: {metadata.loc[test_id, 'is_power_supply_prediction']}"),
+                html.Hr()
             ]))
 
     # Update layout for raw and ambient plot
