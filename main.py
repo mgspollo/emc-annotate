@@ -1,5 +1,9 @@
-import pandas as pd
+import argparse
 
-df = pd.read_csv('data/practice_data/data_schema.csv')
+def main():
+    from src.visualisation.dash_app import app
+    app.run_server(debug=True)
 
-df
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Run the data analysis pipeline.")
+    main()
