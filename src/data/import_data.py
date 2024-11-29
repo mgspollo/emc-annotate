@@ -52,7 +52,7 @@ def generate_file_name(test_id, ambient=True):
     :param ambient: whether or not the spectrum is ambient
     :return: string of the file name
     """
-    test_data_path = "../../data/test_data/"
+    test_data_path = "data/test_data/"
     if ambient:
         file_name = test_data_path + "run3/" + str(test_id) + " - Ambient.csv"
     else:
@@ -90,7 +90,7 @@ def read_test_metadata(max_test_id):
     as rows
     :return: df_fact_dim, dataframe
     """
-    test_data_path = "../../data/test_data/"
+    test_data_path = "data/test_data/"
     df_fact = pd.read_excel(test_data_path + "run3_metadata.xlsx", sheet_name="Data Table", header=[0, 1])
     df_dim_prod = pd.read_excel(test_data_path + "run3_metadata.xlsx", sheet_name="Fact Table",
                                 header=[0, 1])
@@ -110,7 +110,7 @@ def convert_column_names(df):
     :param df:
     :return:
     """
-    test_data_path = "../../data/test_data/"
+    test_data_path = "data/test_data/"
     df = df.T.reset_index()
     df_dict = pd.read_excel(test_data_path + "run3_metadata.xlsx", sheet_name="Data Dictionary", header=0,
                             index_col=[0, 1]).reset_index()
@@ -186,11 +186,11 @@ def process_metadata(max_test_id):
 
 
 def save_metadata(df_metadata):
-    df_metadata.to_csv("../../data/processed_data/metadata.csv", index=False)
+    df_metadata.to_csv("data/processed_data/metadata.csv", index=False)
 
 
 def save_tests(df):
-    df.to_csv("../../data/processed_data/all_tests.csv")
+    df.to_csv("data/processed_data/all_tests.csv")
 
 
 if __name__ == "__main__":
