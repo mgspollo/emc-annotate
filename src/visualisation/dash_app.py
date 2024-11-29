@@ -4,16 +4,11 @@ import plotly.graph_objs as go
 from src.model.identify_components import predict_full
 from src.data.import_data import normalise_spectra
 
-max_test_id = 10080
-# Sample data for the example
-test_ids = [f"{i}" for i in range(10001, max_test_id)]
-df = normalise_spectra(max_test_id)
-
 app = dash.Dash(__name__)
 
-# Assuming `df_metadata` is your metadata dataframe
-metadata = predict_full()
 
+max_test_id = 10080
+test_ids = [f"{i}" for i in range(10001, max_test_id)]
 
 
 app.layout = html.Div(style={'backgroundColor': '#f8f8f8', 'fontFamily': 'Arial, sans-serif'}, children=[
@@ -51,6 +46,8 @@ app.layout = html.Div(style={'backgroundColor': '#f8f8f8', 'fontFamily': 'Arial,
     ]),
 ])
 
+df = normalise_spectra(max_test_id)
+metadata = predict_full()
 
 @app.callback(
     [Output("raw-ambient-plot", "figure"),
@@ -92,9 +89,9 @@ def update_plots(selected_tests):
             children=[
                 html.P(f"Test ID: {test_id}", style={'fontWeight': 'bold'}),
                 html.P(f"Product Description: {metadata.loc[test_id, 'product_description']}"),
-                html.P(f"Power Supply: {'Yes' if metadata.loc[test_id, 'is_power_supply'] else 'No'}"),
                 html.P(f"HDMI Present: {metadata.loc[test_id, 'is_HDMI']}"),
                 html.P(f"Display Port Present: {metadata.loc[test_id, 'is_DisplayPort']}"),
+                html.P(f"Power Supply: {metadata.loc[test_id, 'is_power_supply']}"),
                 html.P("Predicted Components:", style={'fontWeight': 'bold'}),
                 html.P(f"Predicted HDMI Present: {metadata.loc[test_id, 'is_hdmi_prediction']}"),
                 html.P(f"Predicted DisplayPort Present: {metadata.loc[test_id, 'is_display_port_prediction']}"),
