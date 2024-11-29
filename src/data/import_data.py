@@ -191,9 +191,3 @@ def save_metadata(df_metadata):
 
 def save_tests(df):
     df.to_csv("data/processed_data/all_tests.csv")
-
-
-if __name__ == "__main__":
-    max_test_id = 10080
-    df_all_signal = read_test_data(max_test_id)
-    df_metadata = process_metadata(max_test_id)

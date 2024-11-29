@@ -121,7 +121,3 @@ def update_plots(selected_tests):
     )
 
     return raw_ambient_fig, normalized_fig, metadata_info_list
-
-
-if __name__ == '__main__':
-    app.run_server(debug=True)
